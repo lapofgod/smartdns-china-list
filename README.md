@@ -56,3 +56,7 @@ Common files include:
 
 - The generated links in `generated/README.MD` are built using `${{ github.repository }}` at workflow runtime.
 - If you fork this repository, links automatically point to your fork after Actions run.
+
+## License
+
+This project is licensed under [The Unlicense](./LICENSE).
