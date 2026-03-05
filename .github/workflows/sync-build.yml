@@ -27,10 +27,31 @@ jobs:
           scripts/build_smartdns.sh upstream dist "${{ github.repository }}"
 
       - name: Publish generated files to generated branch
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: generated
-          force_orphan: true
-          commit_message: "chore: sync upstream and regenerate smartdns files"
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin generated || true
+
+          if git show-ref --verify --quiet refs/remotes/origin/generated; then
+            git worktree add --detach generated-worktree origin/generated
+          else
+            git worktree add -b generated generated-worktree
+          fi
+
+          cd generated-worktree
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a ../dist/. .
+
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "chore: sync upstream and regenerate smartdns files"
+            git push origin HEAD:generated
+          fi
+
+          cd ..
+          git worktree remove generated-worktree --force
