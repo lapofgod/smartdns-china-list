@@ -34,9 +34,7 @@ write_smartdns_file() {
   extract_domains "$src_file" | sort -u > "$out_file"
 }
 
-combined_domains_file="$OUTPUT_DIR/china-all.smartdns.conf"
-legacy_link_name="smartdns-domains.china.conf"
-legacy_link_path="$OUTPUT_DIR/$legacy_link_name"
+combined_domains_file="$OUTPUT_DIR/smartdns-domains.china.conf"
 all_domains_tmp="$OUTPUT_DIR/.all-domains.tmp"
 : > "$all_domains_tmp"
 
@@ -61,9 +59,6 @@ if [[ "$generated_count" -eq 0 ]]; then
 fi
 
 sort -u "$all_domains_tmp" > "$combined_domains_file"
-
-# Keep a compatibility symlink for clients that expect the legacy filename.
-ln -sfn "$(basename "$combined_domains_file")" "$legacy_link_path"
 
 rm -f "$all_domains_tmp"
 

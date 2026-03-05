@@ -31,15 +31,14 @@ Common files include:
 - `apple.china.smartdns.conf`
 - `google.china.smartdns.conf`
 - `bogus-nxdomain.china.smartdns.conf`
-- `china-all.smartdns.conf`
-- `smartdns-domains.china.conf` (symlink to `china-all.smartdns.conf`)
+- `smartdns-domains.china.conf`
 - `README.MD` (contains per-file external links)
 
 ## SmartDNS Usage Example
 
 ```conf
 # Pure domain list file (one domain per line)
-# /path/to/china-all.smartdns.conf
+# /path/to/smartdns-domains.china.conf
 
 # Import with your preferred SmartDNS domain-set workflow.
 # Exact directives can vary by SmartDNS version.
