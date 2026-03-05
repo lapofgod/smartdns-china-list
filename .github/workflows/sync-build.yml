@@ -1,0 +1,36 @@
+name: Sync Upstream And Build
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 2 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  sync-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Clone upstream dnsmasq-china-list
+        run: |
+          git clone --depth=1 https://github.com/felixonmars/dnsmasq-china-list.git upstream
+
+      - name: Build smartdns formatted files
+        run: |
+          chmod +x scripts/build_smartdns.sh
+          scripts/build_smartdns.sh upstream dist "${{ github.repository }}"
+
+      - name: Publish generated files to generated branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: generated
+          force_orphan: true
+          commit_message: "chore: sync upstream and regenerate smartdns files"
