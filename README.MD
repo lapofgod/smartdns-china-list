@@ -4,7 +4,7 @@ These files are generated from:
 
 - https://github.com/felixonmars/dnsmasq-china-list
 
-Generated at (UTC): 2026-04-22 05:06:38
+Generated at (UTC): 2026-04-23 05:10:46
 
 ## Access links
 
